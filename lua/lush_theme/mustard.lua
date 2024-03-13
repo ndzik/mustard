@@ -96,7 +96,7 @@ local theme = lush(function(injected_functions)
     -- MsgSeparator   { }, -- Separator for scrolled messages, `msgsep` flag of 'display'
     -- MoreMsg        { }, -- |more-prompt|
     -- NonText        { }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line). See also |hl-EndOfBuffer|.
-    -- Normal         { }, -- Normal text
+    Normal         { bg = hsl(39, 100, 5), fg = hsl(45, 100, 60) }, -- Normal text
     -- NormalFloat    { }, -- Normal text in floating windows.
     -- FloatBorder    { }, -- Border of floating windows.
     -- FloatTitle     { }, -- Title of floating windows.
@@ -140,17 +140,16 @@ local theme = lush(function(injected_functions)
     --
     -- Uncomment and edit if you want more specific syntax highlighting.
 
-    -- Comment        { }, -- Any comment
-
-    -- Constant       { }, -- (*) Any constant
-    -- String         { }, --   A string constant: "this is a string"
+    Comment        { fg = Normal.fg.darken(25), gui = "italic" }, -- Any comment
+    Constant       { fg = hsl(188, 100, 62), gui = "bold" }, -- (*) Any constant
+    String         { fg = hsl(107, 100, 42) }, --   A string constant: "this is a string"
     -- Character      { }, --   A character constant: 'c', '\n'
     -- Number         { }, --   A number constant: 234, 0xff
     -- Boolean        { }, --   A boolean constant: TRUE, false
     -- Float          { }, --   A floating point constant: 2.3e10
 
-    -- Identifier     { }, -- (*) Any variable name
-    -- Function       { }, --   Function name (also: methods for classes)
+    Identifier     { fg = hsl(11, 100, 75) }, -- (*) Any variable name
+    Function       { fg = hsl(188, 100, 62), gui = "bold" }, --   Function name (also: methods for classes)
 
     -- Statement      { }, -- (*) Any statement
     -- Conditional    { }, --   if, then, else, endif, switch, etc.
@@ -160,13 +159,13 @@ local theme = lush(function(injected_functions)
     -- Keyword        { }, --   any other keyword
     -- Exception      { }, --   try, catch, throw
 
-    -- PreProc        { }, -- (*) Generic Preprocessor
+    PreProc        { gui = "bold" }, -- (*) Generic Preprocessor
     -- Include        { }, --   Preprocessor #include
     -- Define         { }, --   Preprocessor #define
     -- Macro          { }, --   Same as Define
     -- PreCondit      { }, --   Preprocessor #if, #else, #endif, etc.
 
-    -- Type           { }, -- (*) int, long, char, etc.
+    Type           { }, -- (*) int, long, char, etc.
     -- StorageClass   { }, --   static, register, volatile, etc.
     -- Structure      { }, --   struct, union, enum, etc.
     -- Typedef        { }, --   A typedef
@@ -241,51 +240,62 @@ local theme = lush(function(injected_functions)
     --
     -- For more information see https://github.com/rktjmp/lush.nvim/issues/109
 
-    -- sym"@text.literal"      { }, -- Comment
-    -- sym"@text.reference"    { }, -- Identifier
-    -- sym"@text.title"        { }, -- Title
-    -- sym"@text.uri"          { }, -- Underlined
-    -- sym"@text.underline"    { }, -- Underlined
-    -- sym"@text.todo"         { }, -- Todo
-    -- sym"@comment"           { }, -- Comment
-    -- sym"@punctuation"       { }, -- Delimiter
-    -- sym"@constant"          { }, -- Constant
-    -- sym"@constant.builtin"  { }, -- Special
-    -- sym"@constant.macro"    { }, -- Define
-    -- sym"@define"            { }, -- Define
-    -- sym"@macro"             { }, -- Macro
-    -- sym"@string"            { }, -- String
-    -- sym"@string.escape"     { }, -- SpecialChar
-    -- sym"@string.special"    { }, -- SpecialChar
-    -- sym"@character"         { }, -- Character
-    -- sym"@character.special" { }, -- SpecialChar
-    -- sym"@number"            { }, -- Number
-    -- sym"@boolean"           { }, -- Boolean
-    -- sym"@float"             { }, -- Float
-    -- sym"@function"          { }, -- Function
-    -- sym"@function.builtin"  { }, -- Special
-    -- sym"@function.macro"    { }, -- Macro
-    -- sym"@parameter"         { }, -- Identifier
-    -- sym"@method"            { }, -- Function
-    -- sym"@field"             { }, -- Identifier
+    sym"@text.literal"      { }, -- Comment
+    sym"@text.reference"    { }, -- Identifier
+    sym"@text.title"        { }, -- Title
+    sym"@text.uri"          { }, -- Underlined
+    sym"@text.underline"    { }, -- Underlined
+    sym"@text.todo"         { }, -- Todo
+    sym"@comment"           { fg = Comment.fg, gui = Comment.gui }, -- Comment
+    sym"@punctuation"       { fg = Normal.fg.li(60)  }, -- Delimiter
+    sym"@punctuation.special" { fg = Normal.fg.li(20) }, -- Special
+    sym"@constant"          { fg = Constant.fg, gui = Constant.gui }, -- Constant
+    sym"@constant.builtin"  { }, -- Special
+    sym"@constant.macro"    { }, -- Define
+    sym"@define"            { }, -- Define
+    sym"@macro"             { }, -- Macro
+    sym"@string"            { fg = String.fg }, -- String
+    sym"@string.escape"     { }, -- SpecialChar
+    sym"@string.special"    { }, -- SpecialChar
+    sym"@character"         { }, -- Character
+    sym"@character.special" { }, -- SpecialChar
+    sym"@number"            { }, -- Number
+    sym"@boolean"           { }, -- Boolean
+    sym"@float"             { }, -- Float
+    sym"@function"          { fg = Constant.fg, gui = Constant.gui }, -- Function
+    sym"@function.builtin"  { fg = hsl(79, 100, 64), gui = "bold" }, -- Special
+    sym"@function.macro"    { fg = Normal.fg.li(70), gui = "bold" }, -- Macro
+    sym"@parameter"         { }, -- Identifier
+    sym"@method"            { }, -- Function
+    sym"@field"             { }, -- Identifier
     -- sym"@property"          { }, -- Identifier
     -- sym"@constructor"       { }, -- Special
     -- sym"@conditional"       { }, -- Conditional
     -- sym"@repeat"            { }, -- Repeat
-    -- sym"@label"             { }, -- Label
-    -- sym"@operator"          { }, -- Operator
-    -- sym"@keyword"           { }, -- Keyword
-    -- sym"@exception"         { }, -- Exception
-    -- sym"@variable"          { }, -- Identifier
-    -- sym"@type"              { }, -- Type
-    -- sym"@type.definition"   { }, -- Typedef
-    -- sym"@storageclass"      { }, -- StorageClass
-    -- sym"@structure"         { }, -- Structure
-    -- sym"@namespace"         { }, -- Identifier
-    -- sym"@include"           { }, -- Include
-    -- sym"@preproc"           { }, -- PreProc
-    -- sym"@debug"             { }, -- Debug
-    -- sym"@tag"               { }, -- Tag
+    sym"@label"             { fg = hsl(0, 100, 40) }, -- Label
+    sym"@operator"          { fg = Function.fg, gui = Function.gui }, -- Operator
+    sym"@keyword"           { fg = sym("@function.builtin").fg, gui = sym("@function.builtin").gui }, -- Keyword
+    -- sym"@keyword.coroutine" { },  -- keywords related to coroutines (e.g. `go` in Go, `async/await` in Python)
+    -- sym"@keyword.function"  { },  -- keywords that define a function (e.g. `func` in Go, `def` in Python)
+    -- sym"@keyword.operator"  { },  -- operators that are English words (e.g. `and` / `or`)
+    -- sym"@keyword.import"    { },  -- keywords for including modules (e.g. `import` / `from` in Python)
+    -- sym"@keyword.storage"   { },  -- modifiers that affect storage in memory or life-time
+    -- sym"@keyword.repeat"    { },  -- keywords related to loops (e.g. `for` / `while`)
+    -- sym"@keyword.return"    { },  -- keywords like `return` and `yield`
+    -- sym"@keyword.debug"     { },  -- keywords related to debugging
+    -- sym"@keyword.exception" { },  -- keywords related to exceptions (e.g. `throw` / `catch`)
+    sym"@exception"         { }, -- Exception
+    sym"@variable"          { fg = hsl(48, 100, 66) }, -- Identifier
+    sym"@type"              { fg = hsl(211, 100, 62) }, -- Type
+    sym"@type.definition"   { }, -- Typedef
+    sym"@type.qualifier"    { fg = hsl(322, 100, 64) }, -- Typedef
+    sym"@storageclass"      { }, -- StorageClass
+    sym"@structure"         { }, -- Structure
+    sym"@namespace"         { fg = Normal.fg.da(33) }, -- Identifier
+    sym"@include"           { }, -- Include
+    sym"@preproc"           { }, -- PreProc
+    sym"@debug"             { }, -- Debug
+    sym"@tag"               { }, -- Tag
 }
 end)
 
